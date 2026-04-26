@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: snap-postgres
+    environment:
+      POSTGRES_USER: snap
+      POSTGRES_PASSWORD: snap_pass
+      POSTGRES_DB: snappdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+  redis:
+    image: redis:7
+    container_name: snap-redis
+    ports:
+      - "6379:6379"
+    restart: always
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: snap-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: snap
+      RABBITMQ_DEFAULT_PASSWORD: snap_pass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+  minio:
+    image: minio/minio
+    container_name: snap-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_DEFAULT_USER: minioadmin
+      MINIO_DEFAULT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: always
+volumes:
+  pgdata:
