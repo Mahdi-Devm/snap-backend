@@ -4,13 +4,17 @@ import express from 'express';
 
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
-
+import { setupSwagger } from './config/swagger.config';
 async function bootstrap() {
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
-  const confinguration = app.get(ConfigService);
-  const port = confinguration.get('APP.port') as number;
+  // config
+  const configService = app.get(ConfigService);
+  const port = configService.get('App.port') as number;
+
+  setupSwagger(app, configService);
+
   await app.listen(port);
   console.log(`server running in port ${port}`);
 }

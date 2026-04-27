@@ -1,7 +1,13 @@
 import { registerAs } from '@nestjs/config';
 
-const AppConfig = registerAs('APP', () => ({
+const AppConfig = registerAs('App', () => ({
+  version: 'v1',
   port: 3000,
 }));
+const SwaggerConfig = registerAs('Swagger', () => ({
+  title: 'snap-backend',
+  description: 'this is online trasporter application',
+  version: '1.0.0',
+}));
 
-export const confingurations = [AppConfig];
+export const confingurations = [AppConfig, SwaggerConfig];
