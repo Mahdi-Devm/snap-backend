@@ -7,6 +7,7 @@ export class MainServiceClient {
   constructor(@Inject('Main') private readonly cli: ClientProxy) {}
 
   async callEvent(data) {
+    console.log(data, 'data in Gateyay callEvent');
     try {
       const res: any = await lastValueFrom(this.cli.emit('callEvent', data));
       return res;
@@ -22,6 +23,7 @@ export class MainServiceClient {
     }
   }
   async callAction(data) {
+    console.log(data, 'data in Gateyay');
     try {
       const res: any = await lastValueFrom(this.cli.send('callAction', data));
       return res;

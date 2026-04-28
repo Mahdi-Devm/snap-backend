@@ -1,16 +1,30 @@
-import { Controller, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { DriverSignupInputDto } from 'src/dtos/driver.dto';
+import {
+  Body,
+  Controller,
+  Post,
+  UseFilters,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { DriverRequesOtpIputDto } from 'src/dtos/driver.dto';
+import { HttpExceptionFilter } from 'src/response/httpException.filter';
+import { ResponseInterceptor } from 'src/response/response.interceptors';
 import { DriverAuthService } from './auth.service';
 
+@ApiTags('Driver:Auth')
 @Controller('Auth')
+@UseFilters(HttpExceptionFilter)
+@UseInterceptors(ResponseInterceptor)
 export class DriverAuthController {
   constructor(private readonly driverAuthService: DriverAuthService) {}
 
-  @Post('signup')
-  @ApiOperation({ summary: 'SignUp in app by phone number' })
-  async signup(body: DriverSignupInputDto) {
-    const signupData = await this.driverAuthService.signUp(body);
-    return signupData;
+  @Post('request-otp')
+  @ApiOperation({ summary: 'Request Otp in app by phone number' })
+  async requestOtp(@Body() body: DriverRequesOtpIputDto) {
+    const requestOtpData = await this.driverAuthService.requestOtp(body);
+    return requestOtpData;
   }
+
+  @Post("verify-otp")
+  @ApiOperation({summary:""})
 }
