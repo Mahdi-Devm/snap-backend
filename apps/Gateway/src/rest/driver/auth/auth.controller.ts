@@ -6,7 +6,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { DriverRequesOtpIputDto } from 'src/dtos/driver.dto';
+import {
+  DriverRequesOtpIputDto,
+  DriverVerifyOtpInputDto,
+} from 'src/dtos/driver.dto';
 import { HttpExceptionFilter } from 'src/response/httpException.filter';
 import { ResponseInterceptor } from 'src/response/response.interceptors';
 import { DriverAuthService } from './auth.service';
@@ -24,7 +27,9 @@ export class DriverAuthController {
     const requestOtpData = await this.driverAuthService.requestOtp(body);
     return requestOtpData;
   }
-
-  @Post("verify-otp")
-  @ApiOperation({summary:""})
+  @Post('verify-otp')
+  @ApiOperation({ summary: 'Verify otp sent to driver phone number' })
+  async verifyOtp(@Body() body: DriverVerifyOtpInputDto) {
+    return await this.driverAuthService.verifyOtp(body);
+  }
 }
